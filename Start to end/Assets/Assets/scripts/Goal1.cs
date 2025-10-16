@@ -13,7 +13,7 @@ public class Goal1 : MonoBehaviour
     // Update is called once per frame
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Capsule") ;
+        if (other.gameObject.tag == "Capsule") 
         {
             endparticles.Play();
         }
