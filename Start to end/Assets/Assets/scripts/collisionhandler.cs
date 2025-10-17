@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 public class CollisionHandler : MonoBehaviour
 {
 
@@ -8,21 +9,24 @@ public class CollisionHandler : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] AudioClip successClip;
     [SerializeField] AudioClip deathClip;
+    [SerializeField] AudioClip pointsClip;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.enabled = false;
     }
     void OnCollisionEnter(UnityEngine.Collision collision)
     {
         switch (collision.gameObject.tag)
         {
-            case "Obstacle":
+            case "walls":
                 Fail();
                 break;
-            case "Finish":
+            case "Goal":
                 Success();
+                break;
+            case "coins":
+                Points();
                 break;
             default:
                 Debug.Log("No Tag");
@@ -34,7 +38,6 @@ public class CollisionHandler : MonoBehaviour
     {
         playerMovement.enabled = false;
         audioSource.Stop();
-        audioSource.enabled=true;
         audioSource.PlayOneShot(successClip);
         Invoke("LoadNextLevel", levelLoadDelay);
     }
@@ -43,9 +46,15 @@ public class CollisionHandler : MonoBehaviour
     {
         playerMovement.enabled = false;
         audioSource.Stop();
-        audioSource.enabled = true;
         audioSource.PlayOneShot(deathClip);
         Invoke("ReloadLevel", levelLoadDelay);
+    }
+    void Points()
+    {
+        playerMovement.enabled = false;
+        audioSource.Stop();
+        audioSource.PlayOneShot(successClip);
+        Invoke("LoadNextLevel", levelLoadDelay);
     }
     void ReloadLevel()
     {
